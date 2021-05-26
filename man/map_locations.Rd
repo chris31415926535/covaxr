@@ -8,14 +8,14 @@ map_locations(locs)
 }
 \arguments{
 \item{locs}{A tibble containing COVID-19 vaccination locations obtained
-through `covaxr::get_locations()`.}
+through \code{covaxr::get_locations()}.}
 }
 \value{
-A **leaflet** map.
+A \strong{leaflet} map.
 }
 \description{
 This function makes an interactive map of local COVID-19 vaccination stations
-using the **leaflet** package. It accepts input from
+using the \strong{leaflet} package. It accepts input from
 }
 \examples{
 \dontrun{

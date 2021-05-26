@@ -49,32 +49,34 @@ results to the console (default), or should it post updates to Twitter?}
 \item{verbose}{Boolean. Would you like lots of updates to the console?}
 }
 \value{
-Nothing; runs until terminated.
+Returns nothing; runs until terminated.
 }
 \description{
 This function is a complete bot-in-a-box that will search Ontario's
 provincial vaccine booking system for empty slots and tweet them out. It uses
-the **covaxr** package's `get_locations()` and `check_locations_covax()`
-functions for reading the booking system, and the **rtweet** package to tweet
-them out.
-}
-\details{
+the \strong{covaxr} package's \code{get_locations()} and \code{check_locations_covax()}
+functions for reading the booking system, and the \strong{rtweet} package to tweet
+them out. \emph{Please note this is an unofficial product, in no way affiliated
+with the Government of Ontario, and it comes with no warranty and is to be
+used at your own risk.}
+
 If you're just looking for yourself, you can run it in "local mode" and
 updates will be printed to the console without tweeting.
 
- I've described the function parameters below, but please note you need
- two things for this to work:
-
-  * **A Provincial API Key.** If you have an Ontario Health Card and can log
-  into the provincial COVID-19 booking system, then you have an API key. You
-  can find it by monitoring Chrome's developer console under the 'Network'
-  tab and looking for the value it passes for `vaccineData` when it makes API
-  calls. *The function won't work without one.*
-  * **Twitter Credentials.** The **rtweet** package authors put together a
-  good guide on using OAuth with Twitter, and [you can read it here]
-  (https://cran.r-project.org/web/packages/rtweet/vignettes/auth.html.)
-  * **A latitude & longitude.** The provincial API will return locations near
-  here.
-  * **A dose number.** 1 or 2; at this point 1 is more urgent and dose 2
-  values may not be reliable.
+I've described the function parameters below, but please note you need
+two things for this to work:
+\itemize{
+\item \strong{A Provincial API Key.} If you have an Ontario Health Card and can log
+into the provincial COVID-19 booking system, then you have an API key. You
+can find it by monitoring Chrome's developer console under the 'Network'
+tab and looking for the value it passes for \code{vaccineData} when it makes API
+calls. \emph{The function won't work without one.}
+\item \strong{Twitter Credentials.} The \strong{rtweet} package authors put together a
+good guide on using OAuth with Twitter, and \link{you can read it here}
+(https://cran.r-project.org/web/packages/rtweet/vignettes/auth.html.)
+\item \strong{A latitude & longitude.} The provincial API will return locations near
+here.
+\item \strong{A dose number.} 1 or 2; at this point 1 is more urgent and dose 2
+values may not be reliable.
+}
 }

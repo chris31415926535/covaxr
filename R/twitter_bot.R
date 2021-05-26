@@ -3,11 +3,14 @@
 
 #' Bot-In-A-Box for Tweeting Open Ontario COVID-19 Vaccination Appointments
 #'
+#' @description
 #' This function is a complete bot-in-a-box that will search Ontario's
 #' provincial vaccine booking system for empty slots and tweet them out. It uses
 #' the **covaxr** package's `get_locations()` and `check_locations_covax()`
 #' functions for reading the booking system, and the **rtweet** package to tweet
-#' them out.
+#' them out. *Please note this is an unofficial product, in no way affiliated
+#' with the Government of Ontario, and it comes with no warranty and is to be
+#' used at your own risk.*
 #'
 #' If you're just looking for yourself, you can run it in "local mode" and
 #' updates will be printed to the console without tweeting.
@@ -15,17 +18,17 @@
 #'  I've described the function parameters below, but please note you need
 #'  two things for this to work:
 #'
-#'   * **A Provincial API Key.** If you have an Ontario Health Card and can log
+#'   - **A Provincial API Key.** If you have an Ontario Health Card and can log
 #'   into the provincial COVID-19 booking system, then you have an API key. You
 #'   can find it by monitoring Chrome's developer console under the 'Network'
 #'   tab and looking for the value it passes for `vaccineData` when it makes API
 #'   calls. *The function won't work without one.*
-#'   * **Twitter Credentials.** The **rtweet** package authors put together a
+#'   - **Twitter Credentials.** The **rtweet** package authors put together a
 #'   good guide on using OAuth with Twitter, and [you can read it here]
 #'   (https://cran.r-project.org/web/packages/rtweet/vignettes/auth.html.)
-#'   * **A latitude & longitude.** The provincial API will return locations near
+#'   - **A latitude & longitude.** The provincial API will return locations near
 #'   here.
-#'   * **A dose number.** 1 or 2; at this point 1 is more urgent and dose 2
+#'   - **A dose number.** 1 or 2; at this point 1 is more urgent and dose 2
 #'   values may not be reliable.
 #'
 #'
@@ -44,7 +47,7 @@
 #' @param update_delay How many minutes to wait between updates.
 #' @param verbose Boolean. Would you like lots of updates to the console?
 #'
-#' @return Nothing; runs until terminated.
+#' @return Returns nothing; runs until terminated.
 #' @export
 covax_twitter_bot <- function(twitter_app_name = NA,
                               twitter_consumer_key = NA,
@@ -82,8 +85,8 @@ covax_twitter_bot <- function(twitter_app_name = NA,
     end_date <- as.character(Sys.Date() + lubridate::days(days_in_future))
 
     appointments <- covaxr::check_locations_covax(locations,
-                                          end_date = end_date,
-                                          verbose = verbose)
+                                                  end_date = end_date,
+                                                  verbose = verbose)
 
     # if there are appointments
     # make a tweet if we're not testing
@@ -91,7 +94,7 @@ covax_twitter_bot <- function(twitter_app_name = NA,
     if (nrow(appointments) > 0)
     {
       tweet_text <- create_tweet_text(appointments)
-      if (!local_mode) make_tweet(tweet_text)
+      if (!local_mode) post_tweet(tweet_text, token)
       if (local_mode) message(paste0("Testing, not tweeting:\n",tweet_text))
     }
 

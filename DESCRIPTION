@@ -15,7 +15,9 @@ Imports:
     leaflet,
     magrittr,
     purrr,
+    rtweet,
     tibble
 RoxygenNote: 7.1.1
 URL: https://github.com/chris31415926535/covaxr
 BugReports: https://github.com/chris31415926535/covaxr/issues
+Roxygen: list(markdown = TRUE)

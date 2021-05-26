@@ -20,7 +20,7 @@ get_locations(lat, lng, fromDate = NA, doseNumber, vaccineData)
 \value{
 A tibble with the name, address, locations, and identifiers of all
 COVID-19 vaccination clinics matching the input criteria. In addition the
-returned object has class `covax` that includes metadata about the request--
+returned object has class \code{covax} that includes metadata about the request--
 including the private API access key--that is used by other package functions.
 }
 \description{
@@ -29,13 +29,14 @@ of the COVID-19 vaccination locations that are available for a given
 vaccine dose, place, and date.
 }
 \details{
-This function requires a personal API identifier, called `vaccineData`, that
+This function requires a personal API identifier, called \code{vaccineData}, that
 the Ontario covax API uses to grant access to the system. You can get your
-id by logging into the [provincial booking system](https://vaccine.covaxonbooking.ca/)
-using Chrome and opening the developer console by pressing `Ctrl-Shift-J`
+id by logging into the \href{https://vaccine.covaxonbooking.ca/}{provincial booking system}
+using Chrome and opening the developer console by pressing \code{Ctrl-Shift-J}
 (on a Windows machine--consult Google for advice on other machines)
-
-* https://vaccine.covaxonbooking.ca/
+\itemize{
+\item https://vaccine.covaxonbooking.ca/
+}
 }
 \examples{
 \dontrun{

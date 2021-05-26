@@ -18,9 +18,11 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-This package provides R users with a simple interface to Ontario's Provincial COVID-19 Vaccination Booking System for getting data about vaccination locations and open appointments. These functions make the exact same API calls that your browser does when you use the system. This package is, and will always be, limited to read-only functions to help users get information about locations and open appointments, and helper functions for working with this data.
+This package provides R users with a simple interface to Ontario's Provincial COVID-19 Vaccination Booking System for getting data about vaccination locations and open appointments, and a "bot-in-a-box" function for creating a twitter bot that finds and tweets out empty appointment slots with a single function call. These functions make the exact same API calls that your browser does when you use the system. This package is, and will always be, limited to read-only functions to help users get information about locations and open appointments, and helper functions for working with and sharing this data.
 
 These functions need a personal API key to connect to the provincial system. You can get your personal API key by logging into the provincial system and monitoring the `Network` tab on the Chrome developer console and finding the `vaccineData` parameter in the XHR API calls.
+
+This is an unofficial project that is in no way associated with or endorsed by the Province of Ontario. This package comes with no warranty or guarantees. Use at your own risk!
 
 ## Installation
 
@@ -57,4 +59,26 @@ The function `covaxr::map_locations()` takes the output of `covaxr::get_location
 This package is (as of May 2021) powering a Twitter bot that looks for appointments near Ottawa within the next 3 days. See it in action here:
 
 * [https://twitter.com/OttawaCovidApts](https://twitter.com/OttawaCovidApts)
+
+The package also provides the function `covaxr::covax_twitter_bot()` that lets you make an appointment-seeking bot with a single function call. You can run it in local mode and print updates to the console, or if you set up a Twitter developer account you can post updates to Twitter.
+
+Here's the function call that's powering [\@OttawaCovidApts](https://twitter.com/OttawaCovidApts):
+
+```{r, eval=FALSE}
+
+covaxr::covax_twitter_bot(twitter_app_name = "CovidAptsOtt",
+                          twitter_consumer_key = "put_your_own_values_here_:)",
+                          twitter_consumer_secret = "put_your_own_values_here_:)",
+                          twitter_access_token = "put_your_own_values_here_:)",
+                          twitter_access_secret = "put_your_own_values_here_:)",
+                          local_mode = FALSE,      # offline testing mode, no tweeting
+                          covax_api_key = covax_api_key,         # your personal API key
+                          lat = 45,
+                          lon = -75,
+                          dose_number = 1,           # dose 1 or 2?
+                          days_in_future = 3,    # how many days in future
+                          update_delay = 1,       # minutes between updates
+                          verbose = TRUE)
+
+```
 

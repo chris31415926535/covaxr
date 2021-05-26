@@ -7,8 +7,8 @@
 check_locations_covax(locations, end_date = NA, verbose = TRUE)
 }
 \arguments{
-\item{locations}{A set of locations returned from `covaxr::get_locations()`.
-This will be a tibble with class `covax` and stored metadata.}
+\item{locations}{A set of locations returned from \code{covaxr::get_locations()}.
+This will be a tibble with class \code{covax} and stored metadata.}
 
 \item{end_date}{The last date to check for appointments, format YYYY-MM-DD.}
 
@@ -25,11 +25,11 @@ appointments in a given time range. You can specify the last date to check;
 if no last date is given, it looks for appointments within the next 3 days.
 }
 \details{
-It accepts the results of `covaxr::get_locations()`, and you can pipe to it
-directly with `%>%`.
+It accepts the results of \code{covaxr::get_locations()}, and you can pipe to it
+directly with \verb{\%>\%}.
 
 It returns the input tibble plus extra columns with information about the
- appointments it found, if any. Details are in nested tibbles in the `available`
- column. If you just want to know how many days have vacancies, or which
- days have vacancies, those values are provided in `num_days` and `days`.
+appointments it found, if any. Details are in nested tibbles in the \code{available}
+column. If you just want to know how many days have vacancies, or which
+days have vacancies, those values are provided in \code{num_days} and \code{days}.
 }

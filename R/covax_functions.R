@@ -367,14 +367,15 @@ get_apt_times <- function(location_dates, location_id, verbose = TRUE) {
 
 
 # function to post tweet text
-post_tweet <- function(tweet_text, verbose = TRUE){
+post_tweet <- function(tweet_text, token, verbose = TRUE){
   if (verbose) message("New update. Tweeting:")
-  message(paste0("   ", new_tweet))
+  message(paste0("   ", tweet_text))
 
   tweet_resp <- tryCatch(
     {
       #twitteR::tweet(new_tweet)
-      rtweet::post_tweet(status = tweet_text)
+      rtweet::post_tweet(status = tweet_text,
+                         token = token)
     },
     error=function(cond) {
       message ("Error tweeting. May be the same text repeated.")
