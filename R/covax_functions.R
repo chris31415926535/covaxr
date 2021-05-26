@@ -1,4 +1,3 @@
-
 #' Get a list of local vaccination locations
 #'
 #' This function returns a data frame with the names, locations, and identifiers
@@ -201,6 +200,9 @@ check_locations_covax <- function(locations, end_date = NA, verbose = TRUE){
   if (!"covax" %in% class(locations)) stop ("Input must use results of `covaxr::get_locations()`.")
 
   results <- list()
+  for (i in 1:nrow(locations)) results[[i]] <- tibble::tribble(~date, ~available)
+
+
 
   start_date <- attr(locations, "fromDate")
   dose_number <- attr(locations, "doseNumber")
@@ -249,19 +251,26 @@ check_locations_covax <- function(locations, end_date = NA, verbose = TRUE){
     }
 
     result <- result %>%
-      dplyr::mutate(apt_times = purrr::map(date, get_apt_times, location_id))
+      dplyr::mutate(apt_times = purrr::map(date, get_apt_times, location_id),
+                    num_apts = purrr::map_dbl(apt_times, nrow)) %>%
+      dplyr::filter(num_apts > 0)
     results[[i]] <- result
 
   }
 
   # put all of our results back on the original
   output <- tibble::add_column(locations, available = results) %>%
-    dplyr::mutate(num_days = purrr::map_dbl(available, nrow),
-           days = purrr::map_chr(available, function(x) {
-             days <- dplyr::pull(x, "date")
-             stringr::str_flatten(days, collapse = ", ")
-           })
-    )
+    dplyr::mutate(num_days = purrr::map_dbl(available, nrow))
+           # days = purrr::map_chr(available, function(x) {
+           #   days <- dplyr::pull(x, "date")
+           #   stringr::str_flatten(days, collapse = ", ")
+           # })
+    #)
+
+  output <- output %>%
+    dplyr::filter(num_days > 0) %>%
+    dplyr::select(-num_days) %>%
+    tidyr::unnest(available)
 
   return (output)
 }
@@ -355,3 +364,61 @@ get_apt_times <- function(location_dates, location_id, verbose = TRUE) {
 
   return (output)
 }
+
+
+# function to post tweet text
+post_tweet <- function(tweet_text, verbose = TRUE){
+  if (verbose) message("New update. Tweeting:")
+  message(paste0("   ", new_tweet))
+
+  tweet_resp <- tryCatch(
+    {
+      #twitteR::tweet(new_tweet)
+      rtweet::post_tweet(status = tweet_text)
+    },
+    error=function(cond) {
+      message ("Error tweeting. May be the same text repeated.")
+      message(cond)
+      # Choose a return value in case of error
+      return(cond)
+    }
+  )
+
+  return (tweet_text)
+}
+
+
+# function to take a list of locations + appointments and create tweet text
+create_tweet_text <- function(apts_available){
+
+  # remove a bunch of extra text from the location names
+  fortweet <- apts_available %>%
+    dplyr::arrange(date) %>%
+    dplyr::mutate(nam = stringr::str_remove(name, " FULL/PLEIN"),
+                  nam = stringr::str_remove(nam, "May|Jun.*"),
+                  nam = stringr::str_remove(nam, " - $"),
+                  nam = stringr::str_remove(nam, "\\(.*\\)"),
+                  nam = stringr::str_remove(nam, "\\("),
+                  nam = stringr::str_trim(nam),
+                  dat = paste0(lubridate::month(date, label = TRUE), " ", lubridate::day(date))) %>%
+    dplyr::mutate(txt = paste0(dat,": ", nam, ": ",num_apts," apts")) %>%
+    dplyr::select(txt)
+
+  # format the time
+  the_time <- format(Sys.time(), "%X")
+
+  # trim the tweet so that we have room to put the time at the end
+  # twitter doesn't like it if you post the exact same tweet more than once
+  new_tweet <- fortweet %>%
+    dplyr::pull(txt) %>%
+    stringr::str_flatten(collapse = "\n") %>%
+    stringr::str_trunc(width = (138 - nchar(the_time)), ellipsis = "") %>%
+    paste0(., "\n", the_time)
+
+  return(new_tweet)
+}
+
+
+#' @importFrom magrittr %>%
+
+

@@ -13,6 +13,7 @@ Imports:
     dplyr,
     httr,
     leaflet,
+    magrittr,
     purrr,
     tibble
 RoxygenNote: 7.1.1
