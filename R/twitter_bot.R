@@ -82,21 +82,24 @@ covax_twitter_bot <- function(twitter_app_name = NA,
                                        doseNumber = dose_number,
                                        vaccineData = covax_api_key)
 
-    end_date <- as.character(Sys.Date() + lubridate::days(days_in_future))
+    # if we find any locations, we process them and tweet if applicable
+    if (nrow(locations) > 0){
+      end_date <- as.character(Sys.Date() + lubridate::days(days_in_future))
 
-    appointments <- covaxr::check_locations_covax(locations,
-                                                  end_date = end_date,
-                                                  verbose = verbose)
+      appointments <- covaxr::check_locations_covax(locations,
+                                                    end_date = end_date,
+                                                    verbose = verbose)
 
-    # if there are appointments
-    # make a tweet if we're not testing
-    # print to console if we're testing
-    if (nrow(appointments) > 0)
-    {
-      tweet_text <- create_tweet_text(appointments)
-      if (!local_mode) post_tweet(tweet_text, token)
-      if (local_mode) message(paste0("Testing, not tweeting:\n",tweet_text))
-    }
+      # if there are appointments
+      # make a tweet if we're not testing
+      # print to console if we're testing
+      if (nrow(appointments) > 0)
+      {
+        tweet_text <- create_tweet_text(appointments)
+        if (!local_mode) post_tweet(tweet_text, token)
+        if (local_mode) message(paste0("Testing, not tweeting:\n",tweet_text))
+      }
+    } # end if nrow(locations)> 0
 
     if (verbose) message(paste0("Pausing for ",update_delay," minutes..."))
     Sys.sleep(60 * update_delay)
