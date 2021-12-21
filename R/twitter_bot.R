@@ -44,6 +44,7 @@
 #' @param lon The longitude to search.
 #' @param dose_number The does number to search for (1 or 2).
 #' @param days_in_future How many days in the future to look (default is 3).
+#' @param search_radius Radius in km to search around supplied latitude and longitude.
 #' @param update_delay How many minutes to wait between updates.
 #' @param verbose Boolean. Would you like lots of updates to the console?
 #'
@@ -56,10 +57,11 @@ covax_twitter_bot <- function(twitter_app_name = NA,
                               twitter_access_secret = NA,
                               local_mode = TRUE,      # offline testing mode, no tweeting
                               covax_api_key,         # your personal API key
-                              lat = 45,
-                              lon = -75,
+                              lat = 45.38,
+                              lon = -75.69,
                               dose_number = 1,           # dose 1 or 2?
                               days_in_future = 3,    # how many days in future
+                              search_radius = 25,    # how many km to search around lat/lon
                               update_delay = 1,       # minutes between updates
                               verbose = TRUE){
 
@@ -80,7 +82,8 @@ covax_twitter_bot <- function(twitter_app_name = NA,
                                        lng = lon,
                                        fromDate = as.character(Sys.Date()),
                                        doseNumber = dose_number,
-                                       vaccineData = covax_api_key)
+                                       vaccineData = covax_api_key,
+                                       search_radius = search_radius)
 
     # if we find any locations, we process them and tweet if applicable
     if (nrow(locations) > 0){

@@ -17,6 +17,7 @@
 #' @param fromDate Date to begin looking, in format YYYY-MM-DD.
 #' @param doseNumber Vaccine dose, either 1 or 2.
 #' @param vaccineData Personal API identifier.
+#' @param search_radius Range in km to search for locations.
 #'
 #' @return A tibble with the name, address, locations, and identifiers of all
 #' COVID-19 vaccination clinics matching the input criteria. In addition the
@@ -34,7 +35,11 @@
 #'         covaxr::check_locations_covax(end_date = "2021-09-01")
 #' }
 #' @export
-get_locations <- function(lat, lng, fromDate = NA, doseNumber, vaccineData){
+get_locations <- function(lat, lng, fromDate = NA, doseNumber, vaccineData, search_radius = 25){
+
+  search_radius <- as.numeric(search_radius)
+  if (is.na(search_radius) | ! is.numeric(search_radius)) stop ("Parameter search_radius must be numeric.")
+
 
   if (is.na(fromDate)) fromDate <- Sys.Date()
   fromDate <- as.character(fromDate)
@@ -52,6 +57,9 @@ get_locations <- function(lat, lng, fromDate = NA, doseNumber, vaccineData){
                                                    "lat" = lat)
                                  ,"url" = "https://vaccine.covaxonbooking.ca/manage/location-select"
                                  ,"doseNumber"= doseNumber
+                                 , "locationType" = "CombinedBooking" # this is just the default for me
+                                 , "radiusUnit" = "km"
+                                 ,"radiusValue" = search_radius
                      ),
                      encode = "json")
 
