@@ -4,7 +4,14 @@
 \alias{get_locations}
 \title{Get a list of local vaccination locations}
 \usage{
-get_locations(lat, lng, fromDate = NA, doseNumber, vaccineData)
+get_locations(
+  lat,
+  lng,
+  fromDate = NA,
+  doseNumber,
+  vaccineData,
+  search_radius = 25
+)
 }
 \arguments{
 \item{lat}{Latitude of the location to search from.}
@@ -16,6 +23,8 @@ get_locations(lat, lng, fromDate = NA, doseNumber, vaccineData)
 \item{doseNumber}{Vaccine dose, either 1 or 2.}
 
 \item{vaccineData}{Personal API identifier.}
+
+\item{search_radius}{Range in km to search for locations.}
 }
 \value{
 A tibble with the name, address, locations, and identifiers of all

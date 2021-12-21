@@ -12,10 +12,11 @@ covax_twitter_bot(
   twitter_access_secret = NA,
   local_mode = TRUE,
   covax_api_key,
-  lat = 45,
-  lon = -75,
+  lat = 45.38,
+  lon = -75.69,
   dose_number = 1,
   days_in_future = 3,
+  search_radius = 25,
   update_delay = 1,
   verbose = TRUE
 )
@@ -43,6 +44,8 @@ results to the console (default), or should it post updates to Twitter?}
 \item{dose_number}{The does number to search for (1 or 2).}
 
 \item{days_in_future}{How many days in the future to look (default is 3).}
+
+\item{search_radius}{Radius in km to search around supplied latitude and longitude.}
 
 \item{update_delay}{How many minutes to wait between updates.}
 

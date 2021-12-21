@@ -62,10 +62,11 @@ The function `covaxr::map_locations()` takes the output of
 
 ## Twitter Bot
 
-This package is (as of May 2021) powering a Twitter bot that looks for
-appointments near Ottawa within the next 3 days. See it in action here:
+This package is (as of May 2021 and, sadly, again as of December 2021)
+powering a Twitter bot that looks for appointments near Ottawa within
+the next 30 days. See it in action here:
 
--   <https://twitter.com/OttawaCovidApts>
+-   <https://twitter.com/OttCovidApts>
 
 The package also provides the function `covaxr::covax_twitter_bot()`
 that lets you make an appointment-seeking bot with a single function
@@ -74,7 +75,7 @@ if you set up a Twitter developer account you can post updates to
 Twitter.
 
 Here’s the function call that’s powering
-[@OttawaCovidApts](https://twitter.com/OttawaCovidApts):
+[@OttCovidApts](https://twitter.com/OttCovidApts):
 
 ``` r
 covaxr::covax_twitter_bot(twitter_app_name = "CovidAptsOtt",
@@ -86,8 +87,9 @@ covaxr::covax_twitter_bot(twitter_app_name = "CovidAptsOtt",
                           covax_api_key = covax_api_key,         # your personal API key
                           lat = 45,
                           lon = -75,
-                          dose_number = 1,           # dose 1 or 2?
-                          days_in_future = 3,    # how many days in future
+                          dose_number = 2,        # dose 1 or 2?
+                          days_in_future = 30,     # how many days in future
+                          search_radius = 100,     # search radius in km
                           update_delay = 1,       # minutes between updates
                           verbose = TRUE)
 ```
